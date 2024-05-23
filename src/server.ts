@@ -2,14 +2,22 @@ import express from 'express';
 import { trapRainWater } from './algorithm';
 import logger from './logger';
 import { getCache, setCache } from './cache';
+import errorHandler from './middleware/errorHandler';
 
 const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
 
-app.post('/calculate-water', async (req, res) => {
+app.post('/calculate-water', async (req, res, next) => {
   const { heights } = req.body;
+
+  if (!Array.isArray(heights)) {
+    return res
+      .status(400)
+      .json({ error: 'Invalid input, heights must be an array of numbers.' });
+  }
+
   const heightsStr = JSON.stringify(heights);
 
   logger.info(`Request received: ${heightsStr}`);
@@ -29,10 +37,12 @@ app.post('/calculate-water', async (req, res) => {
     res.json({ volume });
   } catch (error) {
     logger.error(`Error processing request: ${error}`);
-    res.status(500).json({ error: 'Internal Server Error' });
+    next(error);
   }
 });
 
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });

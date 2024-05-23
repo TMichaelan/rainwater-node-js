@@ -16,11 +16,17 @@ const express_1 = __importDefault(require("express"));
 const algorithm_1 = require("./algorithm");
 const logger_1 = __importDefault(require("./logger"));
 const cache_1 = require("./cache");
+const errorHandler_1 = __importDefault(require("./middleware/errorHandler"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const PORT = process.env.PORT || 3000;
-app.post('/calculate-water', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post('/calculate-water', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { heights } = req.body;
+    if (!Array.isArray(heights)) {
+        return res
+            .status(400)
+            .json({ error: 'Invalid input, heights must be an array of numbers.' });
+    }
     const heightsStr = JSON.stringify(heights);
     logger_1.default.info(`Request received: ${heightsStr}`);
     try {
@@ -36,9 +42,10 @@ app.post('/calculate-water', (req, res) => __awaiter(void 0, void 0, void 0, fun
     }
     catch (error) {
         logger_1.default.error(`Error processing request: ${error}`);
-        res.status(500).json({ error: 'Internal Server Error' });
+        next(error);
     }
 }));
+app.use(errorHandler_1.default);
 app.listen(PORT, () => {
-    logger_1.default.info(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
