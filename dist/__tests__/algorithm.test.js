@@ -21,7 +21,7 @@ describe('trapRainWater', () => {
     });
     it('should handle large arrays', () => {
         const largeArray = new Array(1000).fill(0).map((_, i) => (i % 2 === 0 ? 5 : 1));
-        expect((0, algorithm_1.trapRainWater)(largeArray)).toBe(1996); // Исправленное значение
+        expect((0, algorithm_1.trapRainWater)(largeArray)).toBe(1996);
     });
     it('should handle arrays with varying heights', () => {
         expect((0, algorithm_1.trapRainWater)([0, 2, 0, 2, 0])).toBe(2);

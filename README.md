@@ -62,4 +62,17 @@ docker-compose exec app npm run format:check
 docker-compose exec app npm run pre-checkin
 ```
 
+### Adminer
+Adminer is a database management tool that allows you to manage databases, tables, columns, relations, indexes, users, permissions, and more.
+
+To access Adminer, navigate to `http://localhost:8080` in your web browser. Use the following credentials to log in:
+```
+System: PostgreSQL
+Server: db
+Username: rainwater
+Password: rainwater
+Database: rainwater
+```
+
+
 ![Build Status](https://github.com/TMichaelan/rainwater-node-js/actions/workflows/ci.yml/badge.svg)
