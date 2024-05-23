@@ -98,3 +98,7 @@ typings/
 .vscode/
 .idea/
 tags
+
+# distribution
+dist/
+

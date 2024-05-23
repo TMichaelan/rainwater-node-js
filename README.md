@@ -42,8 +42,9 @@ curl -X POST 'http://localhost:3000/calculate-water' -H "Content-Type: applicati
 ```
 ## Running Tests
 ```sh
-docker-compose exec app npm test
+docker-compose exec --user root app npm run test
 ```
+
 
 ## Linting
 ```sh
@@ -59,7 +60,7 @@ docker-compose exec app npm run format
 docker-compose exec app npm run format:check
 ```
 ```sh
-docker-compose exec app npm run pre-checkin
+docker-compose exec --user root app npm run pre-checkin
 ```
 
 ### Adminer
