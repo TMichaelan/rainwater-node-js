@@ -22,7 +22,8 @@ app.use(express_1.default.json());
 const PORT = process.env.PORT || 3000;
 app.post('/calculate-water', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { heights } = req.body;
-    if (!Array.isArray(heights)) {
+    if (!Array.isArray(heights) ||
+        !heights.every((num) => typeof num === 'number')) {
         return res
             .status(400)
             .json({ error: 'Invalid input, heights must be an array of numbers.' });

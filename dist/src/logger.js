@@ -1,16 +1,4 @@
 "use strict";
-// import winston from 'winston';
-//
-// const logger = winston.createLogger({
-//     level: 'info',
-//     format: winston.format.json(),
-//     transports: [
-//         new winston.transports.Console(),
-//         new winston.transports.File({ filename: 'combined.log' }),
-//     ],
-// });
-//
-// export default logger;
 Object.defineProperty(exports, "__esModule", { value: true });
 const winston_1 = require("winston");
 const logger = (0, winston_1.createLogger)({
