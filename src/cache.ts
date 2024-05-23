@@ -1,22 +1,5 @@
-import { Client } from 'pg';
-import dotenv from 'dotenv';
+import client from './db';
 import logger from './logger';
-
-dotenv.config();
-
-const client = new Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: parseInt(process.env.DB_PORT || '5432', 10),
-});
-
-if (process.env.NODE_ENV !== 'test') {
-  client
-    .connect()
-    .catch((error) => logger.error(`Database connection error: ${error}`));
-}
 
 export async function getCache(heights: string): Promise<number | null> {
   try {

@@ -3,6 +3,7 @@ import { trapRainWater } from './algorithm';
 import logger from './logger';
 import { getCache, setCache } from './cache';
 import errorHandler from './middleware/errorHandler';
+import { connectToDatabase } from './db';
 
 const app = express();
 app.use(express.json());
@@ -12,10 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.post('/calculate-water', async (req, res, next) => {
   const { heights } = req.body;
 
-  if (
-    !Array.isArray(heights) ||
-    !heights.every((num) => typeof num === 'number')
-  ) {
+  if (!Array.isArray(heights)) {
     return res
       .status(400)
       .json({ error: 'Invalid input, heights must be an array of numbers.' });
@@ -46,6 +44,7 @@ app.post('/calculate-water', async (req, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await connectToDatabase();
   console.log(`Server running on port ${PORT}`);
 });
