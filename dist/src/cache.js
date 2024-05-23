@@ -13,26 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setCache = exports.getCache = void 0;
-const pg_1 = require("pg");
-const dotenv_1 = __importDefault(require("dotenv"));
+const db_1 = __importDefault(require("./db"));
 const logger_1 = __importDefault(require("./logger"));
-dotenv_1.default.config();
-const client = new pg_1.Client({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: parseInt(process.env.DB_PORT || '5432', 10),
-});
-if (process.env.NODE_ENV !== 'test') {
-    client
-        .connect()
-        .catch((error) => logger_1.default.error(`Database connection error: ${error}`));
-}
 function getCache(heights) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const res = yield client.query("SELECT volume FROM cache WHERE heights = $1 AND created_at > NOW() - INTERVAL '1 minute'", [heights]);
+            const res = yield db_1.default.query("SELECT volume FROM cache WHERE heights = $1 AND created_at > NOW() - INTERVAL '1 minute'", [heights]);
             if (res.rows.length > 0) {
                 logger_1.default.info(`Cache hit for heights: ${heights}`);
                 return res.rows[0].volume;
@@ -52,7 +38,7 @@ exports.getCache = getCache;
 function setCache(heights, volume) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield client.query('INSERT INTO cache (heights, volume, created_at) VALUES ($1, $2, NOW())', [heights, volume]);
+            yield db_1.default.query('INSERT INTO cache (heights, volume, created_at) VALUES ($1, $2, NOW())', [heights, volume]);
             logger_1.default.info(`Cache set for heights: ${heights}, volume: ${volume}`);
         }
         catch (error) {

@@ -17,13 +17,13 @@ const algorithm_1 = require("./algorithm");
 const logger_1 = __importDefault(require("./logger"));
 const cache_1 = require("./cache");
 const errorHandler_1 = __importDefault(require("./middleware/errorHandler"));
+const db_1 = require("./db");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const PORT = process.env.PORT || 3000;
 app.post('/calculate-water', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { heights } = req.body;
-    if (!Array.isArray(heights) ||
-        !heights.every((num) => typeof num === 'number')) {
+    if (!Array.isArray(heights)) {
         return res
             .status(400)
             .json({ error: 'Invalid input, heights must be an array of numbers.' });
@@ -47,6 +47,7 @@ app.post('/calculate-water', (req, res, next) => __awaiter(void 0, void 0, void 
     }
 }));
 app.use(errorHandler_1.default);
-app.listen(PORT, () => {
+app.listen(PORT, () => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, db_1.connectToDatabase)();
     console.log(`Server running on port ${PORT}`);
-});
+}));
