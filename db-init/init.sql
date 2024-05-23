@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS cache (
+    id SERIAL PRIMARY KEY,
+    heights TEXT NOT NULL,
+    volume INTEGER NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
