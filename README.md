@@ -41,10 +41,21 @@ curl -X POST 'http://localhost:3000/calculate-water' -H "Content-Type: applicati
 }
 ```
 ## Running Tests
+
+#### Why Run as Root?
+This ensures that all files and directories have the correct permissions for reading, writing, and executing, especially when generating build artifacts or test coverage reports.
+
+#### Build the Project
+
+```sh
+docker-compose exec --user root app npm run build
+```
+
+#### Run Tests
+
 ```sh
 docker-compose exec --user root app npm run test
 ```
-
 
 ## Linting
 ```sh

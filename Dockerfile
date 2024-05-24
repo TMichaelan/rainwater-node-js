@@ -23,7 +23,7 @@ USER app
 
 EXPOSE 3000
 
-CMD ["node", "dist/server.js"]
+CMD ["node", "dist/src/server.js"]
 
 # Development
 FROM base as dev
